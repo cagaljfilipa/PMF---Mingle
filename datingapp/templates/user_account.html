@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+  <article class="media content-section" style="background-color: transparent;">
+  <div class="card" style="width: 25rem;">
+    <img class="card-img-top" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" alt="Card image cap">
+    <div class="card-body">
+        <h1 class="card-text" style="color: black-50;">
+            {{ post.author.username }}
+        </h1>        
+    </div>
+  </div>
+  <div class="media-body">
+    <h2 class="article-title" style="padding-left: 20%; padding-top: 20%; padding-right: 20%; color: black">{{ post.title }}</h2>
+    <p class="article-content" style="padding-left: 10%; padding-top: 20%; color: black">{{ post.content }}</p>
+    
+  </div>    
+</article>  
+
+{% endblock content %}

@@ -1,0 +1,80 @@
+{% extends "layout.html" %} {% block content %}
+<html>
+<head>
+<title>Chat Room</title>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<!-- Custom css for chat pages -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/chat_style.css') }}">
+</head>
+<body>
+<script type="text/javascript">
+$(document).ready(function() {
+
+	const socket = io.connect('http://127.0.0.1:5000');
+    // Connect to websocket
+    //var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+
+	socket.on('connect', function() {
+		socket.send('User has connected!');
+	});
+
+	socket.on('message', function(msg) {	
+		$("#messages").append('<li>'+ username + ' : '+ msg+'</li>');
+	});
+
+	$('#sendbutton').on('click', function() {
+		//socket.send({'msg': $('#myMessage').val(), 'username':username});
+		socket.send($('#myMessage').val())
+		$('#myMessage').val('');
+	});
+
+});
+</script>
+
+
+</body>
+
+<div id="main-section">
+
+	<!-- Sidebar start -->
+	<nav id="sidebar">
+		<h4>Welcome to chat!</h4>
+	</nav>
+	<!-- Sidebar end -->
+
+	<!-- Rightside pannel start -->
+	<div id="rightside-pannel">
+
+		<!-- Display message start-->
+		<div id="display-message-section">
+			<ul id="messages"></ul>
+		</div>
+		<!-- Display message end -->
+
+		<!-- Type message start -->
+	   <div id="input-area" class="input-group mb-3">
+			<input type="text" id="myMessage" class="form-control" placeholder="Type here..." aria-label="Type a message" aria-describedby="basic-addon2" autocomplete="off">
+			<div class="input-group-append">
+				<button id="sendbutton" class="btn btn-warning" type="button" style="background-color: blueviolet;color: white;">SEND</button>
+			</div>
+		</div>
+		<!-- Type message end -->
+	</div>
+	<!-- Rightside pannel end -->
+</div>
+<!-- Main section end -->
+
+<!--<script type="text/javascript">
+	const username = `{{ username }}`;
+</script>-->
+<script type="text/javascript">
+	const username = '{{ current_user.username }}'
+</script>
+
+
+</html>
+{% endblock content %}
